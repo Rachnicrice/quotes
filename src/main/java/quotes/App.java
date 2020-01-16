@@ -11,6 +11,16 @@ public class App {
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
 
+    }
 
+    public static String readBook (Book book) {
+        String bookString = "";
+        String currentLine = book.bookScanner.nextLine();
+
+        while (book.bookScanner.nextLine() !=null) {
+            bookString += currentLine;
+            currentLine = book.bookScanner.nextLine();
+        }
+        return bookString;
     }
 }
