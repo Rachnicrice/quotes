@@ -10,6 +10,6 @@ public class QuoteTest {
         Quote testQuote = new Quote("Rachael Rice", "Whoever said a jar of Nutella isn't a full meal never had their wisdom teeth taken out");
 
         Assert.assertEquals("Rachael Rice", testQuote.author);
-        Assert.assertEquals("Whoever said a jar of Nutella isn't a full meal never had their wisdom teeth taken out", testQuote.quote);
+        Assert.assertEquals("Whoever said a jar of Nutella isn't a full meal never had their wisdom teeth taken out", testQuote.text);
     }
 }

@@ -3,24 +3,71 @@
  */
 package quotes;
 
+//import com.google.gson.Gson;
+
+import com.google.gson.Gson;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class App {
-    public String getGreeting() {
-        return "Hello world. Here, have some quotes!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+
+//        Book book = new Book ("src/main/resources/recentquotes.json");
+//        String qu = readBookQuote(book);
+//        System.out.println(qu);
+
+        findQuoteOnline();
 
     }
 
-    public static String readBook (Book book) {
-        String bookString = "";
-        String currentLine = book.bookScanner.nextLine();
+    public static String findQuoteOnline () {
+        try {
+            URL url = new URL("https://ron-swanson-quotes.herokuapp.com/v2/quotes");
 
-        while (book.bookScanner.nextLine() !=null) {
-            bookString += currentLine;
-            currentLine = book.bookScanner.nextLine();
+            try {
+                HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+                BufferedReader apiReturn = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+                String quoteArray = apiReturn.readLine();
+                String quote = quoteArray.substring(1, quoteArray.length() - 1);
+
+                if (apiReturn.readLine() != null) {
+                    System.out.println(quote + " ~ Ron Swanson");
+                    Quote ronSays = new Quote (quote, "Ron Swanson");
+                }
+
+            } catch (IOException e) {
+                System.out.println("IDK where the internet went");
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e) {
+            System.out.println("Use a real URL please");
+            e.printStackTrace();
         }
-        return bookString;
+
+
+
+        return null;
+    }
+
+    public static String readBookQuote (Book book) {
+        Gson gson = new Gson();
+        try {
+            Reader bookReader = new FileReader(book.bookPath);
+            Quote[] bookQuotes = gson.fromJson(bookReader, Quote[].class);
+            int quoteAt = generateRandomInt(bookQuotes.length);
+            return gson.toJson(bookQuotes[quoteAt].toString());
+            //do the random number thing here
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static int generateRandomInt (int max) {
+        return (int) Math.floor(Math.random() * max);
     }
 }

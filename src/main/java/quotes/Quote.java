@@ -2,18 +2,20 @@ package quotes;
 
 public class Quote {
     //instance variables
+    String[] tags;
     String author;
-    String quote;
+    String likes;
+    String text;
 
     //Constructor function
-    Quote (String author, String quote) {
+    Quote (String author, String text) {
         this.author = author;
-        this.quote = quote;
+        this.text = text;
     }
 
     //instance methods
     public String toString () {
-        return this.quote + " ~ " + this.author;
+        return this.text + " ~ " + this.author;
     }
 
 }
