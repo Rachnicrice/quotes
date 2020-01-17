@@ -31,9 +31,12 @@ public class App {
             try {
                 HttpURLConnection connect = (HttpURLConnection) url.openConnection();
                 BufferedReader apiReturn = new BufferedReader(new InputStreamReader(connect.getInputStream()));
-                String quote = apiReturn.readLine();
-                while (quote != null) {
+                String quoteArray = apiReturn.readLine();
+                String quote = quoteArray.substring(1, quoteArray.length() - 1);
+
+                if (apiReturn.readLine() != null) {
                     System.out.println(quote + " ~ Ron Swanson");
+                    Quote ronSays = new Quote (quote, "Ron Swanson");
                 }
 
             } catch (IOException e) {
