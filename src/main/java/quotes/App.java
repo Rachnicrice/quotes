@@ -11,20 +11,20 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 public class App {
 
     public static void main(String[] args) {
 
-//        Book book = new Book ("src/main/resources/recentquotes.json");
-//        String qu = readBookQuote(book);
-//        System.out.println(qu);
+        Book book = new Book ("src/main/resources/recentquotes.json");
 
-        findQuoteOnline();
+        findQuoteOnline(book);
 
     }
 
-    public static String findQuoteOnline () {
+    public static void findQuoteOnline (Book book) {
+        Gson gson = new Gson();
         try {
             URL url = new URL("https://ron-swanson-quotes.herokuapp.com/v2/quotes");
 
@@ -34,23 +34,35 @@ public class App {
                 String quoteArray = apiReturn.readLine();
                 String quote = quoteArray.substring(1, quoteArray.length() - 1);
 
-                if (apiReturn.readLine() != null) {
-                    System.out.println(quote + " ~ Ron Swanson");
-                    Quote ronSays = new Quote (quote, "Ron Swanson");
-                }
+
+                System.out.println(quote + " ~ Ron Swanson");
+                Quote ronSays = new Quote (quote, "Ron Swanson");
+
+                Reader bookReader = new FileReader(book.bookPath);
+                Quote[] bookQuotes = gson.fromJson(bookReader, Quote[].class);
+                Quote[] addedQuotes = Arrays.copyOf(bookQuotes, bookQuotes.length + 1);
+                addedQuotes[bookQuotes.length - 1] = ronSays;
+
+                FileWriter write = new FileWriter("src/main/resources/recentquotes.json");
+                write.write(gson.toJson(addedQuotes));
+                write.close();
+
 
             } catch (IOException e) {
-                System.out.println("IDK where the internet went");
+                System.out.println("IDK where the internet went. But here's a quote we had saved.");
+                String qu = readBookQuote(book);
+                System.out.println(qu);
+
                 e.printStackTrace();
             }
         } catch (MalformedURLException e) {
-            System.out.println("Use a real URL please");
+            System.out.println("Use a real URL next time. For now here's a local quote.");
+            String qu = readBookQuote(book);
+            System.out.println(qu);
+
             e.printStackTrace();
         }
 
-
-
-        return null;
     }
 
     public static String readBookQuote (Book book) {
