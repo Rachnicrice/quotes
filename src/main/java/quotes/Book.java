@@ -1,20 +1,12 @@
 package quotes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 public class Book {
     //instance variables
-    Scanner bookScanner;
+    String bookPath;
 
     //constructor function
     Book (String filePath) {
-        try {
-            this.bookScanner = new Scanner(new File(filePath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.bookPath = filePath;
     }
 
     //instance methods
