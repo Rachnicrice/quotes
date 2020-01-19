@@ -3,23 +3,23 @@
  */
 package quotes;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AppTest {
+    Book testBook;
 
     @Before
     public void setUp () {
-
+        testBook = new Book ("src/main/resources/recentquotes.json");
     }
 
     @Test
     public void testGenerateRandomInt () {
+        int actual = App.generateRandomInt(5);
+        Assert.assertTrue(actual >= 0 && actual <= 5);
 
     }
 
-    @Test
-    public void testReadBookQuote () {
-
-    }
 }
